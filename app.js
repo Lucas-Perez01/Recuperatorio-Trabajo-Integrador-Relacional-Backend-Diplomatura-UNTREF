@@ -1,15 +1,12 @@
-const express = require('express');
+import express from "express";
+import { testConnection } from "./conexion/database.js";
+
 const app = express();
-const contenidoRoutes = require('./routes/contenidoRoutes');
-const db = require('./conexion/database');
 
-// Middlewares
-app.use(express.json());
-app.use('/contenido', contenidoRoutes);
+// Probar conexión al iniciar
+testConnection();
 
-// Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
-    
