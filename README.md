@@ -117,8 +117,7 @@ Utiliza una **I.A.** como sugerimos en clase para optimizar la inserción de los
 
 5. Agrega a los siguientes usuarios como colaboradores en tu repositorio:
    - [FabioDrizZt](https://github.com/FabioDrizZt)
-   - [JuanNebbia](https://github.com/JuanNebbia)
-   - [mathiasbarbosa](https://github.com/mathiasbarbosa)
+   - [Fer24Sanchez](https://github.com/Fer24Sanchez)
 
 ## Conclusión
 
@@ -126,4 +125,4 @@ Este proyecto te permitirá aplicar conceptos clave de desarrollo backend, dise�
 
 ---
 
-Recuerda mantener tu código limpio, documentado y seguir las buenas prácticas de desarrollo. ¡Nos vemos en clase para revisar tu progreso el 10 de octubre de 2024!
+Recuerda mantener tu código limpio, documentado y seguir las buenas prácticas de desarrollo. 
