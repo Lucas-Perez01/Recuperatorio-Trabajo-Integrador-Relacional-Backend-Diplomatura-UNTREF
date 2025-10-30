@@ -1,4 +1,4 @@
-# Proyecto Integrador: CRUD con Node.js y MySQL
+# Recuperatorio del Proyecto Integrador: CRUD con Node.js y MySQL
 
 ## Descripción del Proyecto
 
