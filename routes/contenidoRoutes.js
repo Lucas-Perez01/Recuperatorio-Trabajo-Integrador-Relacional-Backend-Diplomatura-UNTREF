@@ -1,27 +1,12 @@
-const express = require('express');
+import express from "express";
+import {
+  getAllContenido,
+  getContenidoById,
+} from "../controllers/contenidoController.js";
+
 const router = express.Router();
-const db = require('../conexion/database');
 
-// Routes for CRUD
-router.get('/', (req, res) => {
-    // Get all content
-});
+router.get("/", getAllContenido);
+router.get("/:id", getContenidoById);
 
-router.get('/:id', (req, res) => {
-    // Get content by ID
-});
-
-router.post('/', (req, res) => {
-    // Add new content
-});
-
-router.put('/:id', (req, res) => {
-    // Update content by ID
-});
-
-router.delete('/:id', (req, res) => {
-    // Delete content by ID
-});
-
-module.exports = router;
-    
+export default router;
