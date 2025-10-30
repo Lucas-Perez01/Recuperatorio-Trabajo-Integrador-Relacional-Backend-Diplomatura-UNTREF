@@ -59,6 +59,55 @@ El diseño debe ser bocetado primero en papel y luego implementado en la platafo
    - Manejo de errores en la estructura de las solicitudes y respuestas.
    - Respuesta adecuada con mensajes y códigos de error específicos.
    - Control de acceso a rutas no existentes con respuestas apropiadas.
+
+## Documentación de la API
+
+### Swagger
+Debes implementar la documentación de tu API utilizando **Swagger** (OpenAPI). Esto permitirá que cualquier desarrollador pueda entender y probar los endpoints de tu aplicación de manera interactiva.
+
+**Requisitos:**
+1. Instalar las dependencias necesarias:
+   ```bash
+   npm install swagger-jsdoc swagger-ui-express
+   ```
+
+2. Configurar Swagger en tu aplicación (`app.js`):
+   - Definir la configuración básica de Swagger (título, versión, descripción, servidor).
+   - Integrar Swagger UI en una ruta específica (ejemplo: `/api-docs`).
+
+3. Documentar cada endpoint con comentarios JSDoc:
+   - Descripción del endpoint.
+   - Parámetros requeridos y opcionales.
+   - Respuestas posibles (códigos de estado y ejemplos).
+   - Modelos de datos (schemas).
+
+4. La documentación debe incluir:
+   - Información general de la API.
+   - Todos los endpoints del CRUD.
+   - Ejemplos de request y response.
+   - Códigos de estado HTTP utilizados.
+
+### Archivo api.http
+Debes crear un archivo **api.http** en la raíz del proyecto que contenga ejemplos de todas las peticiones HTTP que tu API soporta. Este archivo permitirá probar los endpoints de manera rápida usando la extensión REST Client de Visual Studio Code.
+
+**Requisitos:**
+1. Incluir todas las operaciones CRUD:
+   - GET: Obtener todos los contenidos.
+   - GET: Obtener un contenido por ID.
+   - GET: Filtrar contenidos (por título, género, categoría).
+   - POST: Crear un nuevo contenido.
+   - PUT/PATCH: Actualizar un contenido existente.
+   - DELETE: Eliminar un contenido.
+
+2. Cada petición debe incluir:
+   - El método HTTP y la URL completa.
+   - Headers necesarios (Content-Type, etc.).
+   - Body con datos de ejemplo (para POST y PUT).
+   - Comentarios explicativos.
+
+3. Separar las peticiones con `###` para facilitar su ejecución individual.
+
+4. Incluir variables de entorno cuando sea apropiado (ejemplo: `@baseUrl`).
   
 ## Herramientas Sugeridas
 Utiliza una **I.A.** como sugerimos en clase para optimizar la inserción de los datos del JSON a la base de datos. Esto puede ayudarte a transformar el archivo *trailerflix.json* en un formato que sea más fácil de insertar en MySQL.
@@ -80,6 +129,7 @@ Utiliza una **I.A.** como sugerimos en clase para optimizar la inserción de los
   - trailerflix.json
 /README.md
 /app.js
+/api.http
 /conexion/
   - database.js
 /models/
@@ -96,6 +146,7 @@ Utiliza una **I.A.** como sugerimos en clase para optimizar la inserción de los
 - **/json**: Contiene el archivo trailerflix.json con los datos de películas y series.
 - **/README.md**: Este archivo, con la descripción del proyecto.
 - **/app.js**: Archivo principal de la aplicación Node.js.
+- **/api.http**: Archivo con ejemplos de peticiones HTTP para probar todos los endpoints de la API.
 - **/conexion/database.js**: Configuración de la conexión a MySQL.
 - **/models/**: Modelos de datos para las tablas en MySQL.
 - **/routes/**: Definición de las rutas y endpoints del CRUD.
