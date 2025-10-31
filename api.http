@@ -20,13 +20,13 @@ Content-Type: {{contentType}}
 ### 3. Filtrar contenidos por título
 # GET - Filtra contenidos por título
 # Reemplaza el valor del parámetro "titulo" con el título a buscar
-GET {{baseUrl}}/contenido?titulo=Matrix
+GET {{baseUrl}}/contenido/buscar?titulo=crown
 Content-Type: {{contentType}}
 
 ### 4. Filtrar contenidos por género
 # GET - Filtra contenidos por género
 # Reemplaza el valor del parámetro "genero" con el género a buscar
-GET {{baseUrl}}/contenido?genero=Ciencia Ficción
+GET {{baseUrl}}/contenido?genero=Drama
 Content-Type: {{contentType}}
 
 ### 5. Filtrar contenidos por categoría
