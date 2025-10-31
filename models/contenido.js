@@ -37,14 +37,15 @@ const Contenido = sequelize.define(
 );
 
 // Relaciones
-Contenido.belongsTo(Categoria, { foreignKey: "id_categoria" });
-Categoria.hasMany(Contenido, { foreignKey: "id_categoria" });
+Contenido.belongsTo(Categoria, { foreignKey: "id_categoria", as: "categoria" });
+Categoria.hasMany(Contenido, { foreignKey: "id_categoria", as: "contenidos" });
 
 Contenido.belongsToMany(Genero, {
   through: "contenido_genero",
   foreignKey: "id_contenido",
   otherKey: "id_genero",
   timestamps: false,
+  as: "generos",
 });
 
 Genero.belongsToMany(Contenido, {
@@ -52,6 +53,7 @@ Genero.belongsToMany(Contenido, {
   foreignKey: "id_genero",
   otherKey: "id_contenido",
   timestamps: false,
+  as: "contenidos",
 });
 
 Contenido.belongsToMany(Actor, {
@@ -59,6 +61,7 @@ Contenido.belongsToMany(Actor, {
   foreignKey: "id_contenido",
   otherKey: "id_actor",
   timestamps: false,
+  as: "actores",
 });
 
 Actor.belongsToMany(Contenido, {
@@ -66,6 +69,7 @@ Actor.belongsToMany(Contenido, {
   foreignKey: "id_actor",
   otherKey: "id_contenido",
   timestamps: false,
+  as: "contenidos",
 });
 
 export default Contenido;

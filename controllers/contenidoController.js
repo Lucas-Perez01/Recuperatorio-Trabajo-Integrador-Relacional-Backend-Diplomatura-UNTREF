@@ -12,7 +12,7 @@ const getAllContenido = async (req, res) => {
 
     const contenidos = await Contenido.findAll({
       where,
-      include: [Categoria, Genero, Actor],
+      include: [{ model: Categoria, as: "categoria", attributes: ["nombre"] }],
     });
 
     res.json(contenidos);
@@ -80,7 +80,7 @@ const getContenidoByTitulo = async (req, res) => {
         "temporadas",
         "trailer_url",
       ],
-      include: [{ model: Categoria, attributes: ["nombre"] }],
+      include: [{ model: Categoria, as: "categoria", attributes: ["nombre"] }],
     });
 
     if (contenidos.length === 0) {
@@ -105,4 +105,64 @@ const getContenidoByTitulo = async (req, res) => {
   }
 };
 
-export { getAllContenido, getContenidoById, getContenidoByTitulo };
+const getContenidoByGenero = async (req, res) => {
+  try {
+    const { genero } = req.query;
+
+    if (!genero) {
+      return res.status(400).json({
+        error: { code: 400, message: "Debe proporcionar un género." },
+      });
+    }
+
+    const contenidos = await Contenido.findAll({
+      include: [
+        {
+          model: Genero,
+          as: "generos",
+          where: { nombre: genero },
+          attributes: ["nombre"],
+          through: { attributes: [] },
+        },
+        {
+          model: Categoria,
+          as: "categoria",
+          attributes: ["nombre"],
+        },
+      ],
+      attributes: [
+        "id_contenido",
+        "titulo",
+        "poster",
+        "resumen",
+        "temporadas",
+        "trailer_url",
+      ],
+    });
+
+    if (contenidos.length === 0) {
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: `No se encontraron contenidos con el género '${genero}'.`,
+        },
+      });
+    }
+
+    res.json(contenidos);
+  } catch (error) {
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Error al obtener contenidos por género",
+        details: error.message,
+      },
+    });
+  }
+};
+export {
+  getAllContenido,
+  getContenidoById,
+  getContenidoByTitulo,
+  getContenidoByGenero,
+};

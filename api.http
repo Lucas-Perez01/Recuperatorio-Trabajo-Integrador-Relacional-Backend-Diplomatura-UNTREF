@@ -26,8 +26,8 @@ Content-Type: {{contentType}}
 ### 4. Filtrar contenidos por género
 # GET - Filtra contenidos por género
 # Reemplaza el valor del parámetro "genero" con el género a buscar
-GET {{baseUrl}}/contenido?genero=Drama
-Content-Type: {{contentType}}
+GET {{baseUrl}}/contenido/buscarGenero?genero=accion
+Content-Type: application/json
 
 ### 5. Filtrar contenidos por categoría
 # GET - Filtra contenidos por categoría (Película o Serie)
