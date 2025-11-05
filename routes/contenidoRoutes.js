@@ -4,6 +4,7 @@ import {
   getContenidoById,
   getContenidoByTitulo,
   getContenidoByGenero,
+  getContenidoByCategoria,
 } from "../controllers/contenidoController.js";
 
 const router = express.Router();
@@ -13,6 +14,9 @@ router.get("/buscar", getContenidoByTitulo);
 
 // Buscar contenido por género
 router.get("/buscarGenero", getContenidoByGenero);
+
+// Buscar contenido por categoría
+router.get("/buscarCategoria", getContenidoByCategoria);
 
 // Obtener contenido por ID
 router.get("/:id", getContenidoById);

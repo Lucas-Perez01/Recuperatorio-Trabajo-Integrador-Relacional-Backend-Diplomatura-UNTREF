@@ -32,8 +32,8 @@ Content-Type: application/json
 ### 5. Filtrar contenidos por categoría
 # GET - Filtra contenidos por categoría (Película o Serie)
 # Reemplaza el valor del parámetro "categoria" con la categoría a buscar
-GET {{baseUrl}}/contenido?categoria=Película
-Content-Type: {{contentType}}
+GET {{baseUrl}}/contenido/buscarCategoria?categoria=pelicula
+Content-Type: application/json
 
 ### 6. Crear un nuevo contenido (Película)
 # POST - Agrega una nueva película a la base de datos

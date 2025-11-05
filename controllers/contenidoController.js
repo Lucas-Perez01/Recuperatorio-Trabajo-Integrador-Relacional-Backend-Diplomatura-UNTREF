@@ -160,9 +160,62 @@ const getContenidoByGenero = async (req, res) => {
     });
   }
 };
+
+const getContenidoByCategoria = async (req, res) => {
+  try {
+    const { categoria } = req.query;
+
+    if (!categoria) {
+      return res.status(400).json({
+        error: { code: 400, message: "Debe proporcionar una categoría." },
+      });
+    }
+
+    const contenidos = await Contenido.findAll({
+      include: [
+        {
+          model: Categoria,
+          as: "categoria",
+          where: { nombre: categoria },
+          attributes: ["nombre"],
+          required: true,
+        },
+      ],
+      attributes: [
+        "id_contenido",
+        "titulo",
+        "poster",
+        "resumen",
+        "temporadas",
+        "trailer_url",
+      ],
+    });
+
+    if (contenidos.length === 0) {
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: `No se encontraron contenidos con la categoría '${categoria}'.`,
+        },
+      });
+    }
+
+    res.status(200).json(contenidos);
+  } catch (error) {
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Error al obtener contenidos por categoría",
+        details: error.message,
+      },
+    });
+  }
+};
+
 export {
   getAllContenido,
   getContenidoById,
   getContenidoByTitulo,
   getContenidoByGenero,
+  getContenidoByCategoria,
 };
