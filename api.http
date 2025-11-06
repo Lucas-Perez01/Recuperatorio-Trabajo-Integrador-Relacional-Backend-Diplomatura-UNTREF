@@ -42,8 +42,8 @@ POST {{baseUrl}}/contenido
 Content-Type: {{contentType}}
 
 {
-  "titulo": "Nueva Película de Ejemplo",
-  "categoria_id": 1,
+  "titulo": "El señor de los anillos: La comunidad del anillo",
+  "id_categoria": 2,
   "resumen": "Esta es una descripción de ejemplo para una nueva película.",
   "temporadas": null,
   "trailer": "https://www.youtube.com/watch?v=ejemplo",
@@ -58,8 +58,8 @@ POST {{baseUrl}}/contenido
 Content-Type: {{contentType}}
 
 {
-  "titulo": "Nueva Serie de Ejemplo",
-  "categoria_id": 2,
+  "titulo": "La Casa de Papel",
+  "id_categoria": 1,
   "resumen": "Esta es una descripción de ejemplo para una nueva serie.",
   "temporadas": 3,
   "trailer": "https://www.youtube.com/watch?v=ejemplo",

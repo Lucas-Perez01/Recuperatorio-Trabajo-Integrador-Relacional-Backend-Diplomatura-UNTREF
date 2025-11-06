@@ -4,6 +4,9 @@ import Categoria from "../models/categoria.js";
 import Actor from "../models/actor.js";
 import Genero from "../models/genero.js";
 
+// Controladores GET para contenidos
+
+// Obtener todos los contenidos
 const getAllContenido = async (req, res) => {
   try {
     const { titulo } = req.query;
@@ -28,6 +31,7 @@ const getAllContenido = async (req, res) => {
   }
 };
 
+// Obtener contenido por ID
 const getContenidoById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,6 +59,7 @@ const getContenidoById = async (req, res) => {
   }
 };
 
+// Obtener contenido por título
 const getContenidoByTitulo = async (req, res) => {
   try {
     const { titulo } = req.query;
@@ -105,6 +110,7 @@ const getContenidoByTitulo = async (req, res) => {
   }
 };
 
+// Obtener contenido por género
 const getContenidoByGenero = async (req, res) => {
   try {
     const { genero } = req.query;
@@ -161,6 +167,7 @@ const getContenidoByGenero = async (req, res) => {
   }
 };
 
+// Obtener contenido por categoría
 const getContenidoByCategoria = async (req, res) => {
   try {
     const { categoria } = req.query;
@@ -212,10 +219,122 @@ const getContenidoByCategoria = async (req, res) => {
   }
 };
 
+// POST:
+
+// Crear nuevo contenido
+const createContenido = async (req, res) => {
+  try {
+    const {
+      titulo,
+      id_categoria, // Si categoria es 2 es Película, si es 1 es Serie
+      resumen,
+      temporadas,
+      trailer,
+      generos,
+      actores,
+    } = req.body;
+
+    // Validaciones
+    if (!titulo || !id_categoria) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "El título y la categoría son obligatorios.",
+        },
+      });
+    }
+
+    // Si el contenido ya existe
+    const existente = await Contenido.findOne({ where: { titulo } });
+    if (existente) {
+      return res.status(409).json({
+        error: {
+          code: 409,
+          message: `Ya existe un contenido con el título '${titulo}'.`,
+        },
+      });
+    }
+
+    // Validaciones específicas
+    if (id_categoria === 2 && temporadas !== null && temporadas !== undefined) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "Las películas no deben tener temporadas.",
+        },
+      });
+    }
+
+    if (id_categoria === 1 && (!temporadas || temporadas < 1)) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "Las series deben tener al menos una temporada.",
+        },
+      });
+    }
+
+    // Crear el nuevo contenido
+    const nuevoContenido = await Contenido.create({
+      titulo,
+      id_categoria,
+      resumen,
+      temporadas: temporadas || null,
+      trailer_url: trailer || null,
+    });
+
+    // Asociamos géneros si existen
+    if (Array.isArray(generos) && generos.length > 0) {
+      await nuevoContenido.addGeneros(generos);
+    }
+
+    // Asociamos actores si existen
+    if (Array.isArray(actores) && actores.length > 0) {
+      await nuevoContenido.addActores(actores);
+    }
+
+    // Aca obtenemos el contenido y sus relaciones
+    const contenidoCreado = await Contenido.findByPk(
+      nuevoContenido.id_contenido,
+      {
+        include: [
+          {
+            model: Genero,
+            as: "generos",
+            attributes: ["nombre"],
+            through: { attributes: [] },
+          },
+          {
+            model: Actor,
+            as: "actores",
+            attributes: ["nombre"],
+            through: { attributes: [] },
+          },
+        ],
+      }
+    );
+
+    res.status(201).json({
+      message: "Contenido creado exitosamente",
+      contenido: contenidoCreado,
+    });
+  } catch (error) {
+    console.error("Error al crear contenido:", error);
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Error al crear contenido",
+        details: error.message,
+      },
+    });
+  }
+};
+
 export {
   getAllContenido,
   getContenidoById,
   getContenidoByTitulo,
   getContenidoByGenero,
   getContenidoByCategoria,
+  createContenido,
 };
