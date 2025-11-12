@@ -6,6 +6,7 @@ import {
   getContenidoByGenero,
   getContenidoByCategoria,
   createContenido,
+  updateContenido,
 } from "../controllers/contenidoController.js";
 
 const router = express.Router();
@@ -27,5 +28,7 @@ router.get("/", getAllContenido);
 
 // Crear nuevo contenido
 router.post("/", createContenido);
+
+router.put("/:id", updateContenido);
 
 export default router;

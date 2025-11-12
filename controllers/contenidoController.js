@@ -330,6 +330,131 @@ const createContenido = async (req, res) => {
   }
 };
 
+// PUT:
+
+// Actualizar contenido existente
+const updateContenido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      titulo,
+      id_categoria, // Si categoria es 2 es Película, si es 1 es Serie
+      resumen,
+      temporadas,
+      trailer,
+      generos,
+      actores,
+    } = req.body;
+
+    // Verifica que el contenido exista
+    const contenido = await Contenido.findByPk(id);
+    if (!contenido) {
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: `No se encontró contenido con ID ${id}.`,
+        },
+      });
+    }
+
+    // Validaciones de campos (esto es obligatorio)
+    if (!titulo || !id_categoria) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "El título y la categoría son obligatorios.",
+        },
+      });
+    }
+
+    // Validaciones según tipo (si es película o serie)
+    if (id_categoria === 2 && temporadas !== null && temporadas !== undefined) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "Las películas no deben tener temporadas.",
+        },
+      });
+    }
+
+    if (id_categoria === 1 && (!temporadas || temporadas < 1)) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "Las series deben tener al menos una temporada.",
+        },
+      });
+    }
+
+    // Validar título duplicado (que no sea el mismo contenido)
+    const tituloExistente = await Contenido.findOne({
+      where: { titulo, id_contenido: { [Op.ne]: id } },
+    });
+
+    if (tituloExistente) {
+      return res.status(409).json({
+        error: {
+          code: 409,
+          message: `Ya existe un contenido con el título '${titulo}'.`,
+        },
+      });
+    }
+
+    // Si pasa todas las validaciones:
+
+    // Actualizamos el contenido
+    await contenido.update({
+      titulo,
+      id_categoria,
+      resumen,
+      temporadas: temporadas || null,
+      trailer_url: trailer || null,
+    });
+
+    // Actualizamos relaciones
+    if (Array.isArray(generos)) {
+      await contenido.setGeneros(generos); // Esto reemplaza relaciones
+    }
+
+    if (Array.isArray(actores)) {
+      await contenido.setActores(actores);
+    }
+
+    // Aca recuperamos el contenido actualizado con sus relaciones
+    const contenidoActualizado = await Contenido.findByPk(id, {
+      include: [
+        {
+          model: Genero,
+          as: "generos",
+          attributes: ["nombre"],
+          through: { attributes: [] },
+        },
+        {
+          model: Actor,
+          as: "actores",
+          attributes: ["nombre"],
+          through: { attributes: [] },
+        },
+        { model: Categoria, as: "categoria", attributes: ["nombre"] },
+      ],
+    });
+
+    res.json({
+      message: "Contenido actualizado exitosamente.",
+      contenido: contenidoActualizado,
+    });
+  } catch (error) {
+    console.error("Error al actualizar contenido:", error);
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Error al actualizar contenido.",
+        details: error.message,
+      },
+    });
+  }
+};
+
 export {
   getAllContenido,
   getContenidoById,
@@ -337,4 +462,5 @@ export {
   getContenidoByGenero,
   getContenidoByCategoria,
   createContenido,
+  updateContenido,
 };
