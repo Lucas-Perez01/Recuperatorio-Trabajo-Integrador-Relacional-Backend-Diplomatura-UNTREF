@@ -455,6 +455,63 @@ const updateContenido = async (req, res) => {
   }
 };
 
+// PATCH:
+
+// Actualizar parcialmente un contenido
+const patchContenido = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const contenido = await Contenido.findByPk(id);
+    if (!contenido) {
+      return res.status(404).json({
+        error: { code: 404, message: "Contenido no encontrado" },
+      });
+    }
+
+    // Solo actualiza los campos enviados
+    await contenido.update(req.body);
+
+    // Si vienen géneros, actualiza relación
+    if (Array.isArray(req.body.generos)) {
+      await contenido.setGeneros(req.body.generos);
+    }
+
+    // Si vienen actores, actualiza relación
+    if (Array.isArray(req.body.actores)) {
+      await contenido.setActores(req.body.actores);
+    }
+
+    // Recuperamos el contenido actualizado con relaciones
+    const actualizado = await Contenido.findByPk(id, {
+      include: [
+        {
+          model: Genero,
+          as: "generos",
+          attributes: ["nombre"],
+          through: { attributes: [] },
+        },
+        {
+          model: Actor,
+          as: "actores",
+          attributes: ["nombre"],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    return res.json({
+      message: "Contenido actualizado parcialmente",
+      contenido: actualizado,
+    });
+  } catch (error) {
+    console.error("Error en el PATCH:", error);
+    return res.status(500).json({
+      error: { code: 500, message: "Error al actualizar contenido" },
+    });
+  }
+};
+
 export {
   getAllContenido,
   getContenidoById,
@@ -463,4 +520,5 @@ export {
   getContenidoByCategoria,
   createContenido,
   updateContenido,
+  patchContenido,
 };
