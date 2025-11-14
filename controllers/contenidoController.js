@@ -512,6 +512,40 @@ const patchContenido = async (req, res) => {
   }
 };
 
+// DELETE:
+
+// Eliminar un contenido por ID
+const deleteContenido = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const contenido = await Contenido.findByPk(id);
+
+    if (!contenido) {
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: "Contenido no encontrado",
+        },
+      });
+    }
+
+    await contenido.destroy();
+
+    res.json({
+      message: `Contenido con ID ${id} eliminado correctamente.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Error al eliminar contenido",
+        details: error.message,
+      },
+    });
+  }
+};
+
 export {
   getAllContenido,
   getContenidoById,
@@ -521,4 +555,5 @@ export {
   createContenido,
   updateContenido,
   patchContenido,
+  deleteContenido,
 };

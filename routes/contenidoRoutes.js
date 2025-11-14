@@ -8,6 +8,7 @@ import {
   createContenido,
   updateContenido,
   patchContenido,
+  deleteContenido,
 } from "../controllers/contenidoController.js";
 
 const router = express.Router();
@@ -35,5 +36,8 @@ router.put("/:id", updateContenido);
 
 // Actualizar parcialmente un contenido
 router.patch("/:id", patchContenido);
+
+// Eliminar un contenido por ID
+router.delete("/:id", deleteContenido);
 
 export default router;
