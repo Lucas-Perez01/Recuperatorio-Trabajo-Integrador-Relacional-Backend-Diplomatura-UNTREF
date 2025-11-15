@@ -3,6 +3,7 @@ import { testConnection } from "./conexion/database.js";
 import contenidoRoutes from "./routes/contenidoRoutes.js";
 import categoriaRoutes from "./routes/categoriaRoutes.js";
 import generoRoutes from "./routes/generoRoutes.js";
+import actorRoutes from "./routes/actorRoutes.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/contenido", contenidoRoutes);
 app.use("/categorias", categoriaRoutes);
 app.use("/generos", generoRoutes);
+app.use("/actores", actorRoutes);
 
 // Probar conexión al iniciar
 testConnection();
