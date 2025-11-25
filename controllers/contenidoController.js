@@ -283,17 +283,17 @@ const createContenido = async (req, res) => {
       trailer_url: trailer || null,
     });
 
-    // Asociamos géneros si existen
+    // Sequelize genera automáticamente el método addGeneros() gracias a la relación muchos-a-muchos
     if (Array.isArray(generos) && generos.length > 0) {
       await nuevoContenido.addGeneros(generos);
     }
 
-    // Asociamos actores si existen
+    // Sequelize genera automáticamente el método addActores() debido a la asociación definida
     if (Array.isArray(actores) && actores.length > 0) {
       await nuevoContenido.addActores(actores);
     }
 
-    // Aca obtenemos el contenido y sus relaciones
+    // Obtenemos el contenido junto con sus géneros y actores usando include (JOINs automáticos de Sequelize)
     const contenidoCreado = await Contenido.findByPk(
       nuevoContenido.id_contenido,
       {

@@ -37,9 +37,13 @@ const Contenido = sequelize.define(
 );
 
 // Relaciones
+
+// Cada contenido tiene una categoría
 Contenido.belongsTo(Categoria, { foreignKey: "id_categoria", as: "categoria" });
+// Una categoría puede tener muchos contenidos
 Categoria.hasMany(Contenido, { foreignKey: "id_categoria", as: "contenidos" });
 
+// Contenido puede tener muchos géneros
 Contenido.belongsToMany(Genero, {
   through: "contenido_genero",
   foreignKey: "id_contenido",
@@ -48,6 +52,7 @@ Contenido.belongsToMany(Genero, {
   as: "generos",
 });
 
+// Género puede tener muchos contenidos
 Genero.belongsToMany(Contenido, {
   through: "contenido_genero",
   foreignKey: "id_genero",
@@ -56,6 +61,7 @@ Genero.belongsToMany(Contenido, {
   as: "contenidos",
 });
 
+// Un contenido puede tener muchos actores
 Contenido.belongsToMany(Actor, {
   through: "contenido_actor",
   foreignKey: "id_contenido",
@@ -64,6 +70,7 @@ Contenido.belongsToMany(Actor, {
   as: "actores",
 });
 
+// Un actor puede estar en muchos contenidos
 Actor.belongsToMany(Contenido, {
   through: "contenido_actor",
   foreignKey: "id_actor",
